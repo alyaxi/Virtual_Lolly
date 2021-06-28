@@ -1,0 +1,1 @@
+export {WrapRootElement} from "./src/client/wrapRootElement"

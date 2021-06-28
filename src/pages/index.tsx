@@ -1,12 +1,11 @@
 import React from 'react'
+import NewLolly from '../components/NewLolly'
+
 
 export default function index() {
   return (
     <div>
-      <h1>
-        Hello World
-      </h1>
-      
+      <NewLolly />
     </div>
   )
 }
