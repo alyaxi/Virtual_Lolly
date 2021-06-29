@@ -1,9 +1,15 @@
-import * as React from "react"
+import * as React from "react";
+
+interface ColorProps {
+  topFlavor: String,
+  MidFlavor: String,
+  BottomFlavor: String
+}
 
 
-const LollySvg = ({topFlavor}) => {
+const LollySvg: React.FC<ColorProps> = ({topFlavor ,MidFlavor, BottomFlavor}) => {
   return (
-    <div style= {{textAlign: "center"}}>
+    <div >
     <svg
     className="lollipop"
     width="163px"
@@ -60,7 +66,7 @@ const LollySvg = ({topFlavor}) => {
         </mask>
         <use
           className="lollyBottom"
-          fill="#deaa43"
+          fill={BottomFlavor}
           fillRule="nonzero"
           xlinkHref="#path-1"
         />
@@ -76,7 +82,7 @@ const LollySvg = ({topFlavor}) => {
         />
         <rect
           className="lollyMiddle"
-          fill="#e95946"
+          fill={MidFlavor}
           fillRule="nonzero"
           mask="url(#mask-2)"
           x={-29}

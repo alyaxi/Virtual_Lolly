@@ -6,33 +6,44 @@ const q = faunadb.query()
 
 const typeDefs = gql`
   type Query {
-    hello: String
-    allAuthors: [Author!]
-    author(id: Int!): Author
-    authorByName(name: String!): Author
+    
+    LollyData: [Lolly!]
+    getLoly(path): Lolly
+    
   }
-  type Author {
-    id: ID!
-    name: String!
-    married: Boolean!
+  type Lolly {
+    sender: String!
+    message: String!
+    reciever: String!
+    topFlavor: String!
+    MidFlavor: String!
+    BottomFlavor: String!
+    path: String!
+
   }
 `
 
-const authors = [
-  { id: 1, name: 'Terry Pratchett', married: false },
-  { id: 2, name: 'Stephen King', married: true },
-  { id: 3, name: 'JK Rowling', married: false },
-]
+
 
 const resolvers = {
   Query: {
-    hello: () => 'Hello, world!',
-    allAuthors: () => authors,
-    author: () => {},
-    authorByName: (root, args) => {
-      console.log('hihhihi', args.name)
-      return authors.find((author) => author.name === args.name) || 'NOTFOUND'
-    },
+    LollyData: async (_, args) => {
+      try {
+        const client = new faunadb.Client({
+          secret: process.env.FAUNA_SERVER_SECRET
+        })
+        console.log("Connection established");
+        const result = await client.query(
+          q.Map(
+            q.Paginate(q.Match(q.Index("lolly"))),
+            q.Lambda(x => q.Get(x))
+          )
+          )
+          console.log(result);
+      } catch (error) {
+        console.log(error);
+      }
+    }
   },
 }
 
