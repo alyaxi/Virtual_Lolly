@@ -58,7 +58,6 @@ export default function NewLolly() {
           BottomFlavor: BottomFlavor,
         }
     })
-    navigate(``)
     
   }
 
