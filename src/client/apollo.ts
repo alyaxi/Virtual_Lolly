@@ -3,7 +3,7 @@ import fetch from "cross-fetch";
 
 export const client = new ApolloClient({
     link: new HttpLink({
-        uri: "/.netlify/functions/lolli_crud/",
+        uri: "/.netlify/functions/lolii_crud",
         fetch
     }),
     cache: new InMemoryCache()

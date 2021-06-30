@@ -1,25 +1,29 @@
 const { ApolloServer, gql } = require('apollo-server-lambda')
-require(dotenv).config()
+const dotenv = require(dotenv).config()
 const faunadb = require("faunadb")
 const q = faunadb.query()
+const shortid = require("shortid")
 
 
 const typeDefs = gql`
   type Query {
     
     LollyData: [Lolly!]
-    getLoly(path): Lolly
+  
     
   }
   type Lolly {
-    sender: String!
-    message: String!
-    reciever: String!
-    topFlavor: String!
-    MidFlavor: String!
-    BottomFlavor: String!
-    path: String!
+    sender: String
+    message: String
+    reciever: String
+    topFlavor: String
+    MidFlavor: String
+    BottomFlavor: String
+    lollypath: String
 
+  }
+  type Mutation {
+    addLolly(sender: String, message: String, reciever: String, topFlavor: String, MidFlavor: String, BottomFlavor: String, lollypath: String): Lolly
   }
 `
 
@@ -27,26 +31,35 @@ const typeDefs = gql`
 
 const resolvers = {
   Query: {
-    LollyData: async (_, args) => {
+    LollyData: async (root , args, context) => {
+     console.log(args);
+    }
+  },
+  Mutation: {
+    addLolly: async (_, args) => {
       try {
         const client = new faunadb.Client({
           secret: process.env.FAUNA_SERVER_SECRET
         })
-        console.log("Connection established");
+        let id = shortid.generate()
+        args.lollypath = id
         const result = await client.query(
-          q.Map(
-            q.Paginate(q.Match(q.Index("lolly"))),
-            q.Lambda(x => q.Get(x))
+          q.Create(
+            q.Collection("Virtual_lolly"),{
+              data: {
+                args
+              }
+            }
           )
           )
-          console.log(result);
+        const 
       } catch (error) {
         console.log(error);
       }
-    }
-  },
+        
+      } 
 }
-
+}
 const server = new ApolloServer({
   typeDefs,
   resolvers,

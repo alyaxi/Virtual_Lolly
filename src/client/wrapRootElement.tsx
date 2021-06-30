@@ -1,8 +1,7 @@
 import {ApolloProvider} from "@apollo/client"
 import {client} from "./apollo"
+import React from 'react'
 
-export default function WrapRootElement({element}){
-    return(
-        <ApolloProvider client={client}>{element}</ApolloProvider>
-    )
-}
+export const wrapRootElement =  ({element}) => (
+<ApolloProvider client={client}> {element} </ApolloProvider>
+ )
