@@ -33,15 +33,32 @@ const typeDefs = gql`
 
 const resolvers = {
   Query: {
-    LollyData: async () => {
+    LollyData: async (_, args, context) => {
      try {
       const client = new faunadb.Client({
-        secret: process.env.FAUNA_SERVER_SECRET
+        secret: process.env.FAUNA_SERVER_SECRET,
       })
+      const result = await client.query(
+        q.Map(
+          q.Paginate(q.Match(q.Index("lolly"))),
+          q.Lambda(x => q.Get(x))
+        )
+      )
+      const LollyData = result.data.map(lollies => lollies.data)
+      console.log(LollyData);
+      return LollyData
      } catch (error) {
        console.log(error);
      }
-    }
+    },
+    gettingLollypath: async (_, {lollypath}) => {
+      const result=await client.query(
+        query.Get(query.Match(query.Index("lolly"),lollypath))
+      )
+      console.log("getting lollypath", result.data);
+      return result.data;
+}
+    
   },
   Mutation: {
     addLolly: async (_, args) => {
@@ -71,6 +88,8 @@ const resolvers = {
 const server = new ApolloServer({
   typeDefs,
   resolvers,
+  playground: true,
+  introspection:true
 })
 
 const handler = server.createHandler()

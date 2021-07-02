@@ -15,6 +15,7 @@ const ADD_LOLLY_DATA = gql`
       sender
       message
       reciever
+      lollypath
     
 
     }
@@ -57,6 +58,10 @@ export default function NewLolly() {
           MidFlavor: MidFlavor ,
           BottomFlavor: BottomFlavor,
         }
+    }).then(async result => {
+      console.log(result);
+      await navigate(`/lollies/${result.data.addLolly.lolly}`)
+      
     })
     
   }
