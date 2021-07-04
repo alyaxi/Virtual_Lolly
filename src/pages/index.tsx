@@ -1,5 +1,5 @@
 import React from 'react'
-import NewLolly from '../components/NewLolly'
+import NewLolly from "./NewLolly"
 
 
 export default function index() {

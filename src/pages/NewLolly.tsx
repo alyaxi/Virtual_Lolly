@@ -9,7 +9,7 @@ import { navigate } from 'gatsby';
 
 
 const ADD_LOLLY_DATA = gql`
-  mutation addLolly($sender: String, $message: String, $reciever: String, $topFlavor: String, $MidFlavor: String, $BottomFlavor: String, $lollypath:String) {
+  mutation addLolly($sender: String!, $message: String!, $reciever: String!, $topFlavor: String!, $MidFlavor: String!, $BottomFlavor: String!, $lollypath:String) {
     addLolly(sender: $sender, message: $message, reciever: $reciever, topFlavor: $topFlavor, MidFlavor: $MidFlavor, BottomFlavor: $BottomFlavor, lollypath: $lollypath) {
     
       sender
@@ -47,22 +47,22 @@ export default function NewLolly() {
   }
 
 
-  const handleSubmt = (e) => {
-    console.log(e, topFlavor);
-    addLolly({
+  const handleSubmt = async () => {
+  
+    const result = await addLolly({
          variables: {
-          sender: e.sender,
-          message: e.message,
-          reciever: e.receiver,
+          sender: sender,
+          message: message,
+          reciever: receiver,
           topFlavor: topFlavor,
           MidFlavor: MidFlavor ,
           BottomFlavor: BottomFlavor,
         }
-    }).then(async result => {
-      console.log(result);
-      await navigate(`/lollies/${result.data.addLolly.lolly}`)
-      
     })
+     
+      navigate(`/Showlolly?id=${result.data.addLolly.lollypath}`)
+      
+  
     
   }
 
